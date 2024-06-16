@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: Assignment_db
+      POSTGRES_USER: User
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: backend-image:v2
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  frontend:
+    image: frontend-image:v2
+    ports:
+      - "3000:3000"
