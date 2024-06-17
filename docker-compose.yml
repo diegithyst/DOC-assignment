@@ -4,20 +4,34 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: Assignment_db
-      POSTGRES_USER: User
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: assignment-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
+    container_name: db-DOC  # Corrected this line
 
   backend:
+    build:
+      context: ./assignment-doc-backend
+      dockerfile: Dockerfile
     image: backend-image:v2
     ports:
       - "8080:8080"
     depends_on:
       - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-DOC:5432/assignment-db  # Ensure the correct reference to the postgres service
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    container_name: backend-DOC  # Corrected this line
 
   frontend:
+    build:
+      context: ./assignment-doc-frontend
+      dockerfile: Dockerfile
     image: frontend-image:v2
+    container_name: frontend-DOC  # Corrected this line
     ports:
       - "3000:3000"
