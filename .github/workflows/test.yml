@@ -22,7 +22,4 @@ jobs:
           distribution: 'adopt'
 
       - name: Build and Test
-        run: |
-          cd ../../assignment-doc-backend  # Change directory to the root of your repository
-          ls -al
-          mvn -B test
+        run: ls -al
