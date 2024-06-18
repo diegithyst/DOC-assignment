@@ -1,15 +1,13 @@
 name: CI
 
 on:
-  workflow_dispatch:  # Manually trigger workflow runs
   push:
-    branches:
-      - main  # Trigger the workflow on push to the main branch
+    branches: [ main ]
 
 jobs:
-  tests:
-    name: Unit tests
-    runs-on: ubuntu-latest  # Run on Ubuntu using the latest version
+  tests-backend:
+    name: Backend(java) Unit tests
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check-out your repository
@@ -26,3 +24,26 @@ jobs:
              ls -al
              cd assignment-doc-backend
              mvn -B test
+
+  tests-frontend:
+    name: Frontend(react) Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: |
+              cd assignment-doc-frontend
+              npm install
+      - name: Run tests
+        run: |
+             cd assignment-doc-frontend
+             npm test
+
+
+
+  build:
+    needs: tests
