@@ -49,7 +49,6 @@ jobs:
           sleep 50
           echo "Successfully deployed!"
           kubectl get all
-
       - name: Test backend service URLs
         run: |
           echo "SERVICE_URL=$(minikube service backend --url)"
@@ -59,7 +58,7 @@ jobs:
 
       - name: Test frontend service URLs
         run: |
-          echo "SERVICE_URL=$(minikube service frontend-doc --url)"
+          echo "SERVICE_URL=$(minikube service frontend --url)"
           kubectl port-forward service/frontend-doc 3000:3000 &> /dev/null &
           sleep 5
           curl -i http://localhost:3000/
