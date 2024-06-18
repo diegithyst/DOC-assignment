@@ -1,9 +1,9 @@
 name: CD
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 jobs:
   setup:
     name: Start minikube and build images
