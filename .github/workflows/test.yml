@@ -42,8 +42,3 @@ jobs:
         run: |
              cd assignment-doc-frontend
              npm test
-
-
-
-  build:
-    needs: tests
