@@ -9,7 +9,9 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-    container_name: db-DOC  # Corrected this line
+    container_name: db-DOC
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   backend:
     build:
@@ -21,17 +23,21 @@ services:
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/assignment-db  # Ensure the correct reference to the postgres service
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/assignment-db
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    container_name: backend-DOC  # Corrected this line
+    container_name: backend-DOC
 
   frontend:
     build:
       context: ./assignment-doc-frontend
       dockerfile: Dockerfile
     image: frontend-image:v2
-    container_name: frontend-DOC  # Corrected this line
+    container_name: frontend-DOC
     ports:
       - "3000:3000"
+
+volumes:
+  postgres-data:
+    driver: local
