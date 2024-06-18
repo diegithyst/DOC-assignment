@@ -43,6 +43,7 @@ jobs:
            kubectl get all
            sleep 50
            echo "Successfully deployed!"
+	   kubectl get all
      - name: Test backend service URLs
        run: |
            echo "SERVICE_URL=$(minikube service backend --url)"
