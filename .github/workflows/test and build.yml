@@ -38,7 +38,7 @@ jobs:
         run: |
              cd assignment-doc-backend
              mvn -B package -DskipTests
-      - run: mkdir staging && cp target/*jar staging
+      - run: mkdir staging && cp assignment-doc-backend/target/*jar staging
 
   tests-frontend:
     name: Frontend(react) Unit tests
