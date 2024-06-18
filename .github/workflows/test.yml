@@ -22,4 +22,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Build and Test
-        run: ls -al
+        run: |
+             ls -al
+             cd assignment-doc-backend
+             mvn -B test
