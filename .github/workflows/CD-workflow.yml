@@ -1,0 +1,25 @@
+name: CD
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  setup:
+    name: Start minikube and build images
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+     - name: Start Minikube
+       id: minikube
+       uses: medyagh/setup-minikube@latest
+     - name: Try the cluster !
+       run: kubectl get pods -A
+     - name: Build Images
+       run: |
+          export SHELL=/bin/bash
+          eval $(minikube -p minikube docker-env)
+          docker compose build
+          echo -n "Verifying images: "
+          docker images
+          echo "Images build successfully"
