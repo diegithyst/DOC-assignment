@@ -13,7 +13,7 @@ jobs:
      - name: Start Minikube
        id: minikube
        uses: medyagh/setup-minikube@latest
-     - name: Try the cluster !
+     - name: Try cluster
        run: kubectl get pods -A
      - name: Build Images
        run: |
@@ -23,3 +23,43 @@ jobs:
           echo -n "Verifying images: "
           docker images
           echo "Images build successfully"
+     - name: Install Kompose
+       run: |
+           curl -L https://github.com/kubernetes/kompose/releases/download/v1.24.0/kompose-linux-amd64 -o kompose
+           chmod +x kompose
+           sudo mv kompose /usr/local/bin/kompose
+
+     - name: Deploy to minikube
+       run: |
+           kompose convert
+           kubectl apply -f backend-deployment.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl apply -f backend-service.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl apply -f frontend-deployment.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl apply -f frontend-service.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl apply -f postgres-deployment.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl apply -f postgres-persistentvolumeclaim.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl apply -f postgres-service.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl get all
+           sleep 50
+           echo "Succesfully deployed!"
+     - name: test backend service URLs
+       run: |
+           echo "SERVICE_URL=$(minikube service backend --url)"
+           kubectl port-forward service/backend 8080:8080 &> /dev/null &
+           sleep 5
+           kubectl port-forward service/backend 8080:8080 &> /dev/null &
+     - run: |
+           curl -i http://localhost:8080/
+     - name: Test frontend service URLs
+       run: |
+          echo "SERVICE_URL=$(minikube service frontend-doc --url)"
+          kubectl port-forward service/frontend-doc 3000:3000 &> /dev/null &
+          sleep 5
+          kubectl port-forward service/frontend-doc 3000:3000 &> /dev/null &
+     - run: |
+          curl -i http://localhost:3000/
+
+     - name: Cleanup
+        run: |
+          eval $(minikube docker-env -u)
+          minikube delete
