@@ -38,7 +38,7 @@ jobs:
            kubectl apply -f frontend-deployment.yaml 2>&1 >/dev/null | tee /dev/stderr
            kubectl apply -f frontend-service.yaml 2>&1 >/dev/null | tee /dev/stderr
            kubectl apply -f postgres-deployment.yaml 2>&1 >/dev/null | tee /dev/stderr
-           kubectl apply -f postgres-persistentvolumeclaim.yaml 2>&1 >/dev/null | tee /dev/stderr
+           kubectl apply -f postgres-data-persistentvolumeclaim.yaml 2>&1 >/dev/null | tee /dev/stderr
            kubectl apply -f postgres-service.yaml 2>&1 >/dev/null | tee /dev/stderr
            kubectl get all
            sleep 50
