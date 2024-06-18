@@ -9,7 +9,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Run Maven to build the project, skipping tests
-RUN mvn -B clean package -DskipTests
+RUN mvn -B package -DskipTests
 
 # Use an official Alpine image with OpenJDK 19 JRE for the final image
 FROM alpine:3.19
