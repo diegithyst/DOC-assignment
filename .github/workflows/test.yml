@@ -1,8 +1,10 @@
 name: CI
+
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Manually trigger workflow runs
   push:
-    branches: [ main ]
+    branches:
+      - main  # Trigger the workflow on push to the main branch
 
 jobs:
   tests:
@@ -20,4 +22,3 @@ jobs:
 
       - name: Run Tests
         run: mvn -B test
-
