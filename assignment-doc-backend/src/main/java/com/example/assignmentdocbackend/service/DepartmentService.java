@@ -3,6 +3,7 @@ package com.example.assignmentdocbackend.service;
 import com.example.assignmentdocbackend.model.Department;
 import com.example.assignmentdocbackend.repository.DepartmentRepository;
 import com.example.assignmentdocbackend.repository.StoryRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,21 @@ public class DepartmentService {
     DepartmentRepository departmentRepository;
     @Autowired
     StoryRepository storyRepository;
+
+    @PostConstruct
+    public void init() {
+        if (departmentRepository.count() == 0) {
+            Department d1 = new Department("Engineering");
+            Department d2 = new Department("Marketing");
+            Department d3 = new Department("Business");
+
+            departmentRepository.save(d1);
+            departmentRepository.save(d2);
+            departmentRepository.save(d3);
+
+            System.out.println("Default departments initialized.");
+        }
+    }
 
     public List<Department> getDepartments() {
         return departmentRepository.findAll();
