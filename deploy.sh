@@ -5,6 +5,13 @@ eval $(minikube docker-env)
 
 docker-compose build
 
+kubectl delete deployment backend
+kubectl delete deployment frontend
+kubectl delete deployment postgres
+kubectl delete service backend
+kubectl delete service frontend
+kubectl delete service postgres
+
 kompose convert
 
 kubectl apply -f backend-deployment.yaml
