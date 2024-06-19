@@ -23,6 +23,15 @@ jobs:
              ls -al
              cd assignment-doc-backend
              mvn -B test
+             mvn clean package
+
+      - name: Upload Jacoco Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: assignment-doc-backend/target/site/jacoco/
+
+
   build-backend:
     needs: tests-backend
     name: Backend(java) build

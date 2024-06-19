@@ -20,8 +20,8 @@ sleep 30
 kubectl get all
 
 echo "Port forwarding services..."
-kubectl port-forward service/backend 8080:8080
-kubectl port-forward service/frontend 3000:3000
+kubectl port-forward service/backend 8080:8080 &
+kubectl port-forward service/frontend 3000:3000 &
 
 sleep 5
 
