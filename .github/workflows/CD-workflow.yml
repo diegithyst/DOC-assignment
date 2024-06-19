@@ -54,7 +54,7 @@ jobs:
           echo "SERVICE_URL=$(minikube service backend --url)"
           kubectl port-forward service/backend 8080:8080 &> /dev/null &
           sleep 5
-          curl -i http://localhost:8080/departments/1
+          curl -i http://localhost:8080/departments/3
 
       - name: Test frontend service URLs
         run: |
